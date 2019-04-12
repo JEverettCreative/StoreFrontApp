@@ -37,17 +37,57 @@ function displayAvailable() {
 
 function selectPurchase() {
     inquirer
-        .prompt({
+        .prompt([{
             name: "choice",
             type: "input",
             message: "Enter the Item ID number of the product you would like to order."
         },
         {
-            name: "quantity",
+            name: "number",
             type: "input",
-            message: "How many units would you like to order? (Please enter the numeric value."
+            message: "How many units would you like to order? (Please enter the numeric value.)"
 
-        }).then(function(answer) {
-            
-        })
+         }]).then(function(answer) {
+            var query = "SELECT product_name, price, stock_quantity FROM products WHERE ?";
+            connection.query(query, {item_id: answer.choice}, function(err, res) {
+                if (err) throw err;
+                if (answer.number > res[0].stock_quantity) {
+                    console.log("\nInsufficent quantity! Order cannot be fulfilled at this time.");
+                    console.log("Please try again later to see if we've restocked. Thanks!");
+                } else {
+                console.log("Order received! Calculating total...\n");
+                var total = res[0].price * answer.number;
+                console.log("Your Total is: " + total);
+                // updateStock();
+                var newQuery = "UPDATE products SET ? WHERE ?";
+                connection.query(newQuery, [
+                    {
+                        stock_quantity: res[0].stock_quantity - answer.number
+                    },
+                    {
+                        item_id: answer.choice
+                    }
+                ], function(err, res) {
+                    if (err) throw err;
+                    console.log(res.affectedRows + " product updated!");
+                });
+                            }
+                        });
+                        // connection.end();
+                    });
 }
+
+// function updateStock() {
+//     var query = connection.query("UPDATE products SET ? WHERE ?", 
+//     [
+//         {
+//             stock_quantity: res[0].stock_quantity - answer.number
+//         },
+//         {
+//             item_id: answer.choice
+//         }
+//     ], function(err, res) {
+//         if (err) throw err;
+//         console.log(res[0].product_name + " stock quantity updated!");
+//     });
+// }
