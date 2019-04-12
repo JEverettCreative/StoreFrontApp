@@ -53,7 +53,8 @@ function selectPurchase() {
                 if (err) throw err;
                 if (answer.number > res[0].stock_quantity) {
                     console.log("\nInsufficent quantity! Order cannot be fulfilled at this time.");
-                    console.log("Please try again later to see if we've restocked. Thanks!");
+                    console.log("Please try again later to see if we've restocked. Thanks!\n");
+                    buyMore();
                 } else {
                 console.log("Order received! Calculating total...\n");
                 var total = res[0].price * answer.number;
@@ -69,25 +70,30 @@ function selectPurchase() {
                     }
                 ], function(err, res) {
                     if (err) throw err;
-                    console.log(res.affectedRows + " product updated!");
+                    console.log("\n" + answer.number + " item sent to shipping.\n");
+                    buyMore();
                 });
                             }
                         });
-                        // connection.end();
                     });
 }
 
-// function updateStock() {
-//     var query = connection.query("UPDATE products SET ? WHERE ?", 
-//     [
-//         {
-//             stock_quantity: res[0].stock_quantity - answer.number
-//         },
-//         {
-//             item_id: answer.choice
-//         }
-//     ], function(err, res) {
-//         if (err) throw err;
-//         console.log(res[0].product_name + " stock quantity updated!");
-//     });
-// }
+function buyMore() {
+    inquirer
+        .prompt({
+            name: "buyAgain",
+            type: "list",
+            message: "Would you like to buy anything else?",
+            choices: [
+                "Buy Again",
+                "I'm Done, Thanks"
+            ]
+        }).then(function(answer) {
+            if(answer.buyAgain === "Buy Again") {
+                displayAvailable();
+            } else {
+                console.log("\nThanks for shopping with us -- See ya next time!");
+                connection.end();
+            }
+        });
+}
