@@ -89,3 +89,24 @@ function continueWorking() {
             }
         });
 }
+
+function viewInventory() {
+    console.log("Showing all products running low on inventory...\n");
+
+    var query = "SELECT * FROM products WHERE stock_quantity <= 5";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        if (res.length > 0) {
+            for(var i = 0; i < res.length; i++) {
+                console.log("Item ID: " + res[i].item_id + "\n"
+                + "Product Name: " + res[i].product_name + "\n"
+                + "Price: " + res[i].price + "\n"
+                + "Stock Quantity: " + res[i].stock_quantity + "\n");
+            }
+            continueWorking();
+        } else {
+            console.log("All products currently have sufficient stock quantity.");
+            continueWorking();
+        }
+    });
+}
