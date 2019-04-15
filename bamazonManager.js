@@ -110,3 +110,22 @@ function viewInventory() {
         }
     });
 }
+
+function addInventoryStock() {
+    connection.query("SELECT * FROM products", function(err, res) {
+        if (err) throw err;
+        for(var i = 0; i < res.length; i++) {
+            console.log("Item ID: " + res[i].item_id + "\n"
+            + "Product Name: " + res[i].product_name + "\n"
+            + "Stock Quantity: " + res[i].stock_quantity + "\n");
+        }
+        inquirer
+        .prompt({
+            name: "products",
+            type: "input",
+            message: "What enter the Item ID of the product you would like to add stock to from the list above."
+        }).then(function(answer){
+            console.log(answer.product_name);
+        });
+    })
+}
