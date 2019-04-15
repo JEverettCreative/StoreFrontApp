@@ -120,12 +120,39 @@ function addInventoryStock() {
             + "Stock Quantity: " + res[i].stock_quantity + "\n");
         }
         inquirer
-        .prompt({
+        .prompt([
+            {
             name: "products",
             type: "input",
-            message: "What enter the Item ID of the product you would like to add stock to from the list above."
-        }).then(function(answer){
-            console.log(answer.product_name);
+            message: "What enter the Item ID of the product you would like to add stock to from the list above.",
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                  return true;
+                }
+                return false;
+              }
+
+        }, {
+            name: "additional",
+            type: "list",
+            message: "How many units would you like to add?",
+            choices: [
+                1,
+                5,
+                10,
+                50
+            ]
+        }
+    ]).then(function(answer){
+            // var query = "SELECT product_name, stock_quantity FROM products WHERE ?";
+            connection.query("UPDATE products SET ? WHERE ?", [
+                {
+                    stock_quantity: (stock_quantity + answer.additional) 
+                },
+                {
+                    item_id: answer.products
+                }
+            ]);
         });
     })
 }
