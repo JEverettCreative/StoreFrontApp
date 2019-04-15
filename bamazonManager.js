@@ -55,3 +55,37 @@ function displayOptions() {
         });
 }
 
+function viewProducts() {
+    console.log("Showing all products currently for sale...\n");
+    connection.query("SELECT * FROM products", function(err, res) {
+        if (err) throw err;
+
+        for(var i = 0; i < res.length; i++) {
+            console.log("Item ID: " + res[i].item_id + "\n"
+            + "Product Name: " + res[i].product_name + "\n"
+            + "Price: " + res[i].price + "\n"
+            + "Stock Quantity: " + res[i].stock_quantity + "\n");
+        }
+        continueWorking();
+    });
+}
+
+function continueWorking() {
+    inquirer
+        .prompt({
+            name: "optionsMenu",
+            type: "list",
+            message: "Would you like to return to the options menu and keep working?",
+            choices: [
+                "Options Menu",
+                "I'm Done, Thanks"
+            ]
+        }).then(function(answer) {
+            if(answer.optionsMenu === "Options Menu") {
+                displayOptions();
+            } else {
+                console.log("\nGood work today! See you next time.");
+                connection.end();
+            }
+        });
+}
