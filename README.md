@@ -8,7 +8,7 @@ Bamazon is a CLI-based app using Node.js and MySQL to generate an imitation of a
 * Node.js, MySQL, SQL Workbench. 
 
 ## About
-* Bamazon has two main apps with different purposes. BamazonCustomer.js simply allows a user to view all the products available in the MySQL database table "products." They then can enter the item number of whatever they would like to purchase and how many, then the app will check the database stock_quantity. If enough quantity exists, it will calculate the total cost, subtract from the database, and then allow the user to choose to either go back to the beginning or exit.
+Bamazon has two main apps with different purposes. BamazonCustomer.js simply allows a user to view all the products available in the MySQL database table "products." They then can enter the item number of whatever they would like to purchase and how many, then the app will check the database stock_quantity. If enough quantity exists, it will calculate the total cost, subtract from the database, and then allow the user to choose to either go back to the beginning or exit.
 
 BamazonManager.js, currently still a work-in-progress, aims to imitate the viewpoint of a manager checking the inventory through the database. They can currently view all items or filter to items where stock_quantity has fallen to less than 5 items. In each instance, they can return to the first options or quit. Future functionality, when completed, will allow the user as manager to replenish stock_quantities and add entirely new products.
 
@@ -27,7 +27,7 @@ Suggestions are welcome!
 * Open the Customer application by running your CLI and running "node bamazonCustomer"; shows all products initially
 ![CustomerOpenApp](https://user-images.githubusercontent.com/45632983/56180842-aa821980-5fd0-11e9-94de-0f5b5fc04a38.png)
 
-* Follow the prompst to order. Choosing an item in a quantity that exceeds stock will result in the following:
+* Follow the prompts to order. Choosing an item in a quantity that exceeds stock will result in the following:
 ![Insufficient](https://user-images.githubusercontent.com/45632983/56180954-1d8b9000-5fd1-11e9-9b8c-8d97b2db0eec.png)
 
 * Choosing "Buy Again" allows you to start over. An order that can be fulfilled will be received in the following manner:
